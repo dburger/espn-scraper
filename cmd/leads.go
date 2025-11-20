@@ -22,7 +22,9 @@ This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("leads called")
-		for gameId := range espn.Fileids("2025ids.txt") {
+		// TODO(dburger): handle the error?
+		idfile, _ := cmd.Flags().GetString("idfile")
+		for gameId := range espn.Fileids(idfile) {
 			stat, err := espn.FetchLargestLead(gameId)
 			if err == nil {
 				fmt.Println(gameId, stat)
@@ -45,4 +47,7 @@ func init() {
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
 	// leadsCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	leadsCmd.Flags().StringP("idfile", "i", "", "File containing game ids")
+	// TODO(dburger): handle the error?
+	leadsCmd.MarkFlagRequired("idfile")
 }

@@ -20,10 +20,11 @@ and usage of using your command. For example:
 Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
-	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("leads called")
-		// TODO(dburger): handle the error?
-		idfile, _ := cmd.Flags().GetString("idfile")
+	RunE: func(cmd *cobra.Command, args []string) error {
+		idfile, err := cmd.Flags().GetString("idfile")
+		if err != nil {
+			return err
+		}
 		for gameId := range espn.Fileids(idfile) {
 			stat, err := espn.FetchLargestLead(gameId)
 			if err == nil {
@@ -32,6 +33,8 @@ to quickly create a Cobra application.`,
 				fmt.Println(gameId, err)
 			}
 		}
+
+		return nil
 	},
 }
 
@@ -48,6 +51,8 @@ func init() {
 	// is called directly, e.g.:
 	// leadsCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 	leadsCmd.Flags().StringP("idfile", "i", "", "File containing game ids")
-	// TODO(dburger): handle the error?
-	leadsCmd.MarkFlagRequired("idfile")
+	err := leadsCmd.MarkFlagRequired("idfile")
+	if err != nil {
+		panic(err)
+	}
 }

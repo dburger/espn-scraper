@@ -1,5 +1,5 @@
 /*
-Copyright © 2025 NAME HERE <EMAIL ADDRESS>
+Copyright © 2025 heisenburg
 */
 package cmd
 
@@ -14,15 +14,12 @@ import (
 // idsCmd represents the ids command
 var idsCmd = &cobra.Command{
 	Use:   "ids",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "Dumps the game IDs for the current NBA season",
+	Long: `Dumps the game IDs for the current NBA season. Currently
+this is hardcoded to the 2025 season. Note that this tool does not,
+by default, know how to weed out the NBA cup final and various all-star
+weekend events.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("ids called")
 		date := time.Date(2025, 10, 21, 0, 0, 0, 0, time.UTC)
 		for i := 0; i < 200; i++ {
 			gameIds, err := espn.FetchGameIds(date)
@@ -39,14 +36,4 @@ to quickly create a Cobra application.`,
 
 func init() {
 	nbaCmd.AddCommand(idsCmd)
-
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// idsCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// idsCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }

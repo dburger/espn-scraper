@@ -1,5 +1,5 @@
 /*
-Copyright © 2025 NAME HERE <EMAIL ADDRESS>
+Copyright © 2025 heisenburg
 */
 package cmd
 
@@ -13,13 +13,9 @@ import (
 // leadsCmd represents the leads command
 var leadsCmd = &cobra.Command{
 	Use:   "leads",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "Dumps largest lead stats for the given game IDs",
+	Long: `Dumps the largest lead stats scraped from the ESPN website
+for the given game IDs.`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		idfile, err := cmd.Flags().GetString("idfile")
 		if err != nil {
@@ -40,16 +36,6 @@ to quickly create a Cobra application.`,
 
 func init() {
 	nbaCmd.AddCommand(leadsCmd)
-
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// leadsCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// leadsCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 	leadsCmd.Flags().StringP("idfile", "i", "", "File containing game ids")
 	err := leadsCmd.MarkFlagRequired("idfile")
 	if err != nil {
